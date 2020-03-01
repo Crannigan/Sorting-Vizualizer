@@ -175,3 +175,12 @@ li {
 .sort-list-item {
   margin-right: 10px;
 }
+
+.start-button {
+  position: absolute;
+  top: 110px;
+  left: 30px;
+  opacity: 75%;
+  width: 75px;
+  height: 40px;
+}

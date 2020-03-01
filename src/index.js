@@ -21,6 +21,14 @@ function SortTab(props)    {
     }
 }
 
+function StartButton(props)     {
+    return (
+        <button type="button" className="btn btn-info start-button" onClick={props.onClick}>
+            <div className="start-button-text">Start</div>
+        </button>
+    );
+}
+
 class HeaderBar extends React.Component {
     renderTab(i, active, textVal) {
         return (
@@ -52,7 +60,7 @@ class HeaderBar extends React.Component {
                             <div className="col-sm-12">
                                 <ul className="social-network">
                                     <li><a className="waves-effect waves-dark" href="https://github.com/Crannigan"><i className="fa fa-github"></i></a></li>
-                                    <li><a className="waves-effect waves-dark" href="#"><i className="fa fa-id-card"></i></a></li>
+                                    <li><a className="waves-effect waves-dark" href="/"><i className="fa fa-id-card"></i></a></li>
                                 </ul>
                             </div>
                         </div>
@@ -65,7 +73,6 @@ class HeaderBar extends React.Component {
                             <span className="navbar-toggler-icon"></span>
                         </button>
                         <div className="collapse navbar-collapse" id="navbarResponsive">
-
                             <ul className="navbar-nav ml-auto">
                             {sortItems}
                             </ul>
@@ -82,7 +89,11 @@ class HeaderBar extends React.Component {
 class SortContainer extends React.Component {
     render()    {
         return(
-            <div className="app-container"></div>
+            <div className="app-container">
+                <StartButton 
+                    onClick={() => this.props.onClick()}
+                />
+            </div>
         )
     }
 }
@@ -90,9 +101,13 @@ class SortContainer extends React.Component {
 class Sorting extends React.Component   {
     constructor(props)  {
         super(props);
+
+        const currentArray = getRandomArray(30);
+
         this.state = {
             methods: ['Selection Sort', 'Bubble Sort','Test Sort'],
             active: 0,
+            sortBars: currentArray,
         };
     }
 
@@ -100,6 +115,12 @@ class Sorting extends React.Component   {
         this.setState({
             active: i,
         });
+    }
+
+    startSorting(activeSort, sortArray)    {
+        const sortFunctions = [selectionSort, bubbleSort, testSort];
+        const thisSortFunction = sortFunctions[activeSort];
+        thisSortFunction(sortArray);
     }
 
     render()    {
@@ -110,7 +131,9 @@ class Sorting extends React.Component   {
                     whichActive={this.state.active}
                     onClick={(i) => this.handleClick(i)}
                 />
-                <SortContainer />
+                <SortContainer 
+                    onClick={() => this.startSorting(this.state.active, this.state.sortBars)}
+                />
             </div>
         );
     }
@@ -121,3 +144,30 @@ ReactDOM.render(
     document.getElementById('root')
 );
 
+
+function selectionSort(sortItems)   {
+    console.log(sortItems);
+}
+
+function bubbleSort(sortItems)   {
+    console.log("Bubble Sorting");
+}
+
+function testSort(sortItems)   {
+    console.log("Test Sorting");
+}
+
+function getRandomArray(limitVal)   {
+    let tempSorted = Array.from(Array(limitVal).keys());
+    const unsorted = [];
+    let tempLen = tempSorted.length;
+
+    while(tempLen !== 0)   {
+        let randomVal = Math.floor(Math.random() * tempLen);
+        unsorted.push(tempSorted[randomVal]);
+        tempSorted = tempSorted.slice(0, randomVal).concat(tempSorted.slice(randomVal + 1, tempLen));
+        tempLen = tempSorted.length;
+    }
+
+    return unsorted;
+}
