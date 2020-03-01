@@ -184,3 +184,17 @@ li {
   width: 75px;
   height: 40px;
 }
+
+.single-bar {
+  background-color: white;
+  border: solid red 1px;
+  margin-right: 10px;
+  bottom: 0;
+}
+
+.bar-list {
+  position: absolute;
+  display: inline-flex;
+  top: 10%;
+  left: 10%;
+}

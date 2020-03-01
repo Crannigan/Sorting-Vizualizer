@@ -86,13 +86,39 @@ class HeaderBar extends React.Component {
     }
 }
 
+function PrintBar(props)    {
+    return  (
+        <div className="single-bar" style={{height: (props.height * 500), width: (props.limitVal * 1.3)}}></div>
+    );
+}
+
 class SortContainer extends React.Component {
+    renderBar(i, barValue, isActive, nItems)  {
+        return (
+            <PrintBar 
+                key={i}
+                height={barValue}
+                active={isActive}
+                limitVal={nItems}
+            />
+        );
+    }
+
     render()    {
+        let i, limitVal = this.props.printArray.length;
+        const printedBars = [];
+        for(i = 0; i < limitVal; i++) {
+            printedBars.push(this.renderBar(i, (this.props.printArray[i]/limitVal), false, limitVal));
+        }
+
         return(
             <div className="app-container">
                 <StartButton 
                     onClick={() => this.props.onClick()}
                 />
+                <div className="bar-list">
+                    {printedBars}
+                </div>
             </div>
         )
     }
@@ -117,8 +143,44 @@ class Sorting extends React.Component   {
         });
     }
 
+    selectionSort = (sortItems) =>   {
+        let i, k;
+        let itemsLen = sortItems.length;
+        let changeArray = sortItems;
+        console.log(i + ' : ' + changeArray);
+        for(i = 0; i < (itemsLen - 1); i++)   {
+            let minIndex = i, min = changeArray[i];
+            for(k = i + 1; k < itemsLen; k++)   {
+                if(changeArray[k] < min)  {
+                    min = changeArray[k];
+                    minIndex = k;
+                }
+            }
+            
+            let temp = changeArray[i];
+            changeArray[i] = changeArray[minIndex];
+            changeArray[minIndex] = temp;
+
+            this.setState({
+                sortBars: changeArray,
+            });
+
+            //setTimeout((), 1000);
+
+            console.log(i + ' : ' + this.state.sortBars);
+        }
+    }
+
+    bubbleSort(sortItems)   {
+        console.log("Bubble Sorting");
+    }
+    
+    testSort(sortItems)   {
+        console.log("Test Sorting");
+    }
+
     startSorting(activeSort, sortArray)    {
-        const sortFunctions = [selectionSort, bubbleSort, testSort];
+        const sortFunctions = [this.selectionSort, this.bubbleSort, this.testSort];
         const thisSortFunction = sortFunctions[activeSort];
         thisSortFunction(sortArray);
     }
@@ -133,6 +195,7 @@ class Sorting extends React.Component   {
                 />
                 <SortContainer 
                     onClick={() => this.startSorting(this.state.active, this.state.sortBars)}
+                    printArray={this.state.sortBars}
                 />
             </div>
         );
@@ -143,19 +206,6 @@ ReactDOM.render(
     <Sorting />, 
     document.getElementById('root')
 );
-
-
-function selectionSort(sortItems)   {
-    console.log(sortItems);
-}
-
-function bubbleSort(sortItems)   {
-    console.log("Bubble Sorting");
-}
-
-function testSort(sortItems)   {
-    console.log("Test Sorting");
-}
 
 function getRandomArray(limitVal)   {
     let tempSorted = Array.from(Array(limitVal).keys());
