@@ -186,8 +186,7 @@ li {
 }
 
 .single-bar {
-  background-color: white;
-  border: solid red 1px;
+  background-color: darkgray;
   margin-right: 10px;
   bottom: 0;
 }

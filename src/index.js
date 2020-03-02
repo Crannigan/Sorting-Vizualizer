@@ -88,7 +88,7 @@ class HeaderBar extends React.Component {
 
 function PrintBar(props)    {
     return  (
-        <div className="single-bar" style={{height: (props.height * 500), width: (props.limitVal * 1.3)}}></div>
+        <div className="single-bar" style={{height: (props.height * 700), width: (props.limitVal * 1.3)}}></div>
     );
 }
 
@@ -108,7 +108,7 @@ class SortContainer extends React.Component {
         let i, limitVal = this.props.printArray.length;
         const printedBars = [];
         for(i = 0; i < limitVal; i++) {
-            printedBars.push(this.renderBar(i, (this.props.printArray[i]/limitVal), false, limitVal));
+            printedBars.push(this.renderBar(i, ((this.props.printArray[i]+2)/(limitVal+2)), false, limitVal));
         }
 
         return(
@@ -135,6 +135,12 @@ class Sorting extends React.Component   {
             active: 0,
             sortBars: currentArray,
         };
+
+        this.recursiveSelectionSort = this.recursiveSelectionSort.bind(this);
+        this.testSort = this.testSort.bind(this);
+        this.selectionSort = this.selectionSort.bind(this);
+        this.bubbleSort = this.bubbleSort.bind(this);
+        this.startSorting = this.startSorting.bind(this);
     }
 
     handleClick(i)  {
@@ -143,41 +149,48 @@ class Sorting extends React.Component   {
         });
     }
 
-    selectionSort = (sortItems) =>   {
-        let i, k;
-        let itemsLen = sortItems.length;
-        let changeArray = sortItems;
-        console.log(i + ' : ' + changeArray);
-        for(i = 0; i < (itemsLen - 1); i++)   {
-            let minIndex = i, min = changeArray[i];
-            for(k = i + 1; k < itemsLen; k++)   {
-                if(changeArray[k] < min)  {
-                    min = changeArray[k];
-                    minIndex = k;
-                }
-            }
-            
-            let temp = changeArray[i];
-            changeArray[i] = changeArray[minIndex];
-            changeArray[minIndex] = temp;
-
-            this.setState({
-                sortBars: changeArray,
-            });
-
-            //setTimeout((), 1000);
-
-            console.log(i + ' : ' + this.state.sortBars);
-        }
+    selectionSort(sortItems)   {
+        setTimeout(() => {
+            this.recursiveSelectionSort(sortItems);
+        }, 200);
     }
 
     bubbleSort(sortItems)   {
         console.log("Bubble Sorting");
     }
-    
-    testSort(sortItems)   {
+
+    recursiveSelectionSort(sortItems)   {
+        let i = 0;
+        let itemsLen = sortItems.length;
+        let changeArray = sortItems;
+        while(changeArray[i] === i) {
+            i = i + 1;
+            if(i === itemsLen)  {
+                break;
+            }
+        }
+
+        if(i === sortItems.length)  {
+            return;
+        }
+
+        let swapIndex = changeArray.indexOf(i);
+        changeArray[swapIndex] = changeArray[i];
+        changeArray[i] = i;
+
+        this.setState({
+            sortBars: changeArray,
+        });
+
+        setTimeout(() => {
+            this.recursiveSelectionSort(this.state.sortBars);
+        }, 200);
+    }
+
+    testSort(sortItems) {
         console.log("Test Sorting");
     }
+
 
     startSorting(activeSort, sortArray)    {
         const sortFunctions = [this.selectionSort, this.bubbleSort, this.testSort];
