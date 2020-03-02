@@ -137,17 +137,17 @@ class Sorting extends React.Component   {
         const currentArray = getRandomArray(55);
 
         this.state = {
-            methods: ['Selection Sort', 'Bubble Sort','Test Sort'],
+            methods: ['Selection Sort', 'Bubble Sort'],
             active: 0,
             sortBars: currentArray,
             activeBars: null,
         };
 
         this.recursiveSelectionSort = this.recursiveSelectionSort.bind(this);
-        this.testSort = this.testSort.bind(this);
         this.selectionSort = this.selectionSort.bind(this);
         this.bubbleSort = this.bubbleSort.bind(this);
         this.startSorting = this.startSorting.bind(this);
+        this.recursiveBubbleSort = this.recursiveBubbleSort.bind(this);
     }
 
     handleClick(i)  {
@@ -160,20 +160,17 @@ class Sorting extends React.Component   {
         setTimeout(() => {
             this.recursiveSelectionSort(sortItems, 0);
         }, 200);
-
-        setTimeout(() =>    {
-            this.setState({
-                activeBars: null,
-            });
-        }, 230*sortItems.length);
-
-        console.log(sortItems.length);
     }
 
     recursiveSelectionSort(sortItems, iVal)   {
         let changeArray = sortItems;
 
         if(iVal === sortItems.length)  {
+            setTimeout(() =>    {
+                this.setState({
+                    activeBars: null,
+                });
+            }, 200);
             return;
         }
 
@@ -193,11 +190,45 @@ class Sorting extends React.Component   {
     }
 
     bubbleSort(sortItems)   {
-        console.log("Bubble Sorting");
+        setTimeout(() => {
+            this.recursiveBubbleSort(sortItems, 0, true);
+        }, 200);
     }
 
-    testSort(sortItems) {
-        console.log("Test Sorting");
+    recursiveBubbleSort(sortItems, iVal, noSwaps)   {
+        let changeArray = sortItems, iter = iVal;
+        let swapped = noSwaps;
+
+        if((iter+1) === sortItems.length)   {
+            if(noSwaps) {
+                setTimeout(() =>    {
+                    this.setState({
+                        activeBars: null,
+                    });
+                }, 200);
+                return;
+            }   else    {
+                iter = 0;
+                swapped = true;
+            }
+        }
+
+        let val1 = changeArray[iter];
+        let val2 = changeArray[iter+1];
+        if(val1 > val2) {
+            changeArray[iter] = val2;
+            changeArray[iter+1] = val1;
+            swapped = false;
+        }
+
+        this.setState({
+            sortBars: changeArray,
+            activeBars: [iter, iter+1],
+        });
+
+        setTimeout(() => {
+            this.recursiveBubbleSort(changeArray, iter+1, swapped);
+        })
     }
 
 
