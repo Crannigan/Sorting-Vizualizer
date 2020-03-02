@@ -87,9 +87,15 @@ class HeaderBar extends React.Component {
 }
 
 function PrintBar(props)    {
-    return  (
-        <div className="single-bar" style={{height: (props.height * 700), width: (props.limitVal * 1.3)}}></div>
-    );
+    if(!props.active)   {
+        return  (
+            <div className="single-bar" style={{height: (props.height * 700), width: (props.limitVal/3)}}></div>
+        );
+    }   else    {
+        return (
+            <div className="single-active-bar" style={{height: (props.height * 700), width: (props.limitVal/3)}}></div>
+        );
+    }
 }
 
 class SortContainer extends React.Component {
@@ -108,7 +114,13 @@ class SortContainer extends React.Component {
         let i, limitVal = this.props.printArray.length;
         const printedBars = [];
         for(i = 0; i < limitVal; i++) {
-            printedBars.push(this.renderBar(i, ((this.props.printArray[i]+2)/(limitVal+2)), false, limitVal));
+            let isActive = false;
+            if(this.props.activeBars)   {
+                if(this.props.activeBars[0] === i || this.props.activeBars[1] === i)    {
+                    isActive = true;
+                }
+            }
+            printedBars.push(this.renderBar(i, ((this.props.printArray[i]+2)/(limitVal+2)), isActive, limitVal));
         }
 
         return(
@@ -128,12 +140,13 @@ class Sorting extends React.Component   {
     constructor(props)  {
         super(props);
 
-        const currentArray = getRandomArray(30);
+        const currentArray = getRandomArray(55);
 
         this.state = {
             methods: ['Selection Sort', 'Bubble Sort','Test Sort'],
             active: 0,
             sortBars: currentArray,
+            activeBars: null,
         };
 
         this.recursiveSelectionSort = this.recursiveSelectionSort.bind(this);
@@ -153,6 +166,14 @@ class Sorting extends React.Component   {
         setTimeout(() => {
             this.recursiveSelectionSort(sortItems, 0);
         }, 200);
+
+        setTimeout(() =>    {
+            this.setState({
+                activeBars: null,
+            });
+        }, 230*sortItems.length);
+
+        console.log(sortItems.length);
     }
 
     recursiveSelectionSort(sortItems, iVal)   {
@@ -168,11 +189,13 @@ class Sorting extends React.Component   {
 
         this.setState({
             sortBars: changeArray,
+            activeBars: [iVal, swapIndex],
         });
 
         setTimeout(() => {
             this.recursiveSelectionSort(this.state.sortBars, (iVal + 1));
         }, 200);
+
     }
 
     bubbleSort(sortItems)   {
@@ -201,6 +224,7 @@ class Sorting extends React.Component   {
                 <SortContainer 
                     onClick={() => this.startSorting(this.state.active, this.state.sortBars)}
                     printArray={this.state.sortBars}
+                    activeBars={this.state.activeBars}
                 />
             </div>
         );
