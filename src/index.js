@@ -170,7 +170,7 @@ class Sorting extends React.Component   {
                 this.setState({
                     activeBars: null,
                 });
-            }, 200);
+            }, 100);
             return;
         }
 
@@ -191,25 +191,27 @@ class Sorting extends React.Component   {
 
     bubbleSort(sortItems)   {
         setTimeout(() => {
-            this.recursiveBubbleSort(sortItems, 0, true);
+            this.recursiveBubbleSort(sortItems, 0, true, sortItems.length);
         }, 200);
     }
 
-    recursiveBubbleSort(sortItems, iVal, noSwaps)   {
+    recursiveBubbleSort(sortItems, iVal, noSwaps, limit)   {
         let changeArray = sortItems, iter = iVal;
         let swapped = noSwaps;
+        let topLimit = limit;
 
-        if((iter+1) === sortItems.length)   {
+        if((iter+1) === topLimit)   {
             if(noSwaps) {
                 setTimeout(() =>    {
                     this.setState({
                         activeBars: null,
                     });
-                }, 200);
+                }, 100);
                 return;
             }   else    {
                 iter = 0;
                 swapped = true;
+                topLimit = topLimit - 1;
             }
         }
 
@@ -227,7 +229,7 @@ class Sorting extends React.Component   {
         });
 
         setTimeout(() => {
-            this.recursiveBubbleSort(changeArray, iter+1, swapped);
+            this.recursiveBubbleSort(changeArray, iter+1, swapped, topLimit);
         })
     }
 
