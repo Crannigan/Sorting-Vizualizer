@@ -151,40 +151,32 @@ class Sorting extends React.Component   {
 
     selectionSort(sortItems)   {
         setTimeout(() => {
-            this.recursiveSelectionSort(sortItems);
+            this.recursiveSelectionSort(sortItems, 0);
         }, 200);
     }
 
-    bubbleSort(sortItems)   {
-        console.log("Bubble Sorting");
-    }
-
-    recursiveSelectionSort(sortItems)   {
-        let i = 0;
-        let itemsLen = sortItems.length;
+    recursiveSelectionSort(sortItems, iVal)   {
         let changeArray = sortItems;
-        while(changeArray[i] === i) {
-            i = i + 1;
-            if(i === itemsLen)  {
-                break;
-            }
-        }
 
-        if(i === sortItems.length)  {
+        if(iVal === sortItems.length)  {
             return;
         }
 
-        let swapIndex = changeArray.indexOf(i);
-        changeArray[swapIndex] = changeArray[i];
-        changeArray[i] = i;
+        let swapIndex = changeArray.indexOf(iVal);
+        changeArray[swapIndex] = changeArray[iVal];
+        changeArray[iVal] = iVal;
 
         this.setState({
             sortBars: changeArray,
         });
 
         setTimeout(() => {
-            this.recursiveSelectionSort(this.state.sortBars);
+            this.recursiveSelectionSort(this.state.sortBars, (iVal + 1));
         }, 200);
+    }
+
+    bubbleSort(sortItems)   {
+        console.log("Bubble Sorting");
     }
 
     testSort(sortItems) {
