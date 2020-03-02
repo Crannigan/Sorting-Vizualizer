@@ -1,5 +1,13 @@
 A sorting vizuals app.
 
-Selection Sort
+Use `npm install` to install dependencies.
 
-![](SelectionSort.gif)
+Use `npm start` to start the react project.
+
+### Selection Sort
+
+![](sortingGifs/SelectionSort.gif)
+
+### Bubble Sort
+
+![](sortingGifs/BubbleSort.gif)
