@@ -54,31 +54,31 @@ class HeaderBar extends React.Component {
         return  (
             <div className="main-container">
                 <div className="fixed-top">
-                <header className="topbar">
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-sm-12">
-                                <ul className="social-network">
-                                    <li><a className="waves-effect waves-dark" href="https://github.com/Crannigan"><i className="fa fa-github"></i></a></li>
-                                    <li><a className="waves-effect waves-dark" href="/"><i className="fa fa-id-card"></i></a></li>
+                    <header className="topbar">
+                        <div className="container">
+                            <div className="row">
+                                <div className="col-sm-12">
+                                    <ul className="social-network">
+                                        <li><a className="waves-effect waves-dark" href="https://github.com/Crannigan"><i className="fa fa-github"></i></a></li>
+                                        <li><a className="waves-effect waves-dark" href="/"><i className="fa fa-id-card"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+                    <nav className="navbar navbar-expand-lg navbar-dark mx-background-top-linear">
+                        <div className="container">
+                            <a className="navbar-brand" href="/"> Sorting Vizualizer</a>
+                            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                                <span className="navbar-toggler-icon"></span>
+                            </button>
+                            <div className="collapse navbar-collapse" id="navbarResponsive">
+                                <ul className="navbar-nav ml-auto">
+                                {sortItems}
                                 </ul>
                             </div>
                         </div>
-                    </div>
-                </header>
-                <nav className="navbar navbar-expand-lg navbar-dark mx-background-top-linear">
-                    <div className="container">
-                        <a className="navbar-brand" href="/"> Sorting Vizualizer</a>
-                        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                            <span className="navbar-toggler-icon"></span>
-                        </button>
-                        <div className="collapse navbar-collapse" id="navbarResponsive">
-                            <ul className="navbar-nav ml-auto">
-                            {sortItems}
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
+                    </nav>
                 </div>
                 <div className="sort-contain"></div>
             </div>
@@ -87,15 +87,9 @@ class HeaderBar extends React.Component {
 }
 
 function PrintBar(props)    {
-    if(!props.active)   {
-        return  (
-            <div className="single-bar" style={{height: (props.height * 700), width: (props.limitVal/3)}}></div>
-        );
-    }   else    {
-        return (
-            <div className="single-active-bar" style={{height: (props.height * 700), width: (props.limitVal/3)}}></div>
-        );
-    }
+    return  (
+        <div className={props.active ? "single-active-bar" : "single-bar"} style={{height: (props.height * 500), width: (props.limitVal/5)}}></div>
+    );
 }
 
 class SortContainer extends React.Component {
