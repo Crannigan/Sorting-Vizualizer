@@ -185,6 +185,15 @@ li {
   height: 40px;
 }
 
+.reset-button {
+  position: absolute;
+  top: 210px;
+  left: 30px;
+  opacity: 75%;
+  width: 75px;
+  height: 40px;
+}
+
 .single-bar {
   background-color: darkgray;
   margin-right: 10px;

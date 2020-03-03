@@ -21,14 +21,6 @@ function SortTab(props)    {
     }
 }
 
-function StartButton(props)     {
-    return (
-        <button type="button" className="btn btn-info start-button" onClick={props.onClick}>
-            <div className="start-button-text">Start</div>
-        </button>
-    );
-}
-
 class HeaderBar extends React.Component {
     renderTab(i, active, textVal) {
         return (
@@ -92,6 +84,22 @@ function PrintBar(props)    {
     );
 }
 
+function StartButton(props)     {
+    return (
+        <button type="button" className="btn btn-info start-button" onClick={props.onClick}>
+            <div className="start-button-text">Start</div>
+        </button>
+    );
+}
+
+function ResetButton(props) {
+    return (
+        <button type="button" className="btn btn-info reset-button" onClick={props.onClick}>
+            <div className="reset-button-text">Reset</div>
+        </button>
+    );
+}
+
 class SortContainer extends React.Component {
     renderBar(i, barValue, isActive, nItems)  {
         return (
@@ -122,6 +130,9 @@ class SortContainer extends React.Component {
                 <StartButton 
                     onClick={() => this.props.onClick()}
                 />
+                <ResetButton 
+                    onClick={() => this.props.reset()}
+                />
                 <div className="bar-list">
                     {printedBars}
                 </div>
@@ -137,7 +148,7 @@ class Sorting extends React.Component   {
         const currentArray = getRandomArray(55);
 
         this.state = {
-            methods: ['Selection Sort', 'Bubble Sort', 'Insertion Sort'],
+            methods: ['Selection Sort', 'Bubble Sort', 'Insertion Sort', 'Merge Sort'],
             active: 0,
             sortBars: currentArray,
             activeBars: null,
@@ -150,6 +161,8 @@ class Sorting extends React.Component   {
         this.recursiveBubbleSort = this.recursiveBubbleSort.bind(this);
         this.insertionSort = this.insertionSort.bind(this);
         this.recursiveInsertionSort = this.recursiveInsertionSort.bind(this);
+        this.mergeSort = this.mergeSort.bind(this);
+        this.recursiveMergeSort = this.recursiveMergeSort.bind(this);
     }
 
     handleClick(i)  {
@@ -285,16 +298,30 @@ class Sorting extends React.Component   {
                 this.recursiveInsertionSort(changeArray, iter + 1, iter);
             }, 50);
         }
-
-
-
     }
 
+    mergeSort(sortItems)   {
+        setTimeout(() => {
+            this.recursiveMergeSort(sortItems, 0);
+        }, 100);
+    }
+
+    recursiveMergeSort(sortItems)   {
+        console.log("Merge Sorting");
+    }
 
     startSorting(activeSort, sortArray)    {
-        const sortFunctions = [this.selectionSort, this.bubbleSort, this.insertionSort];
+        const sortFunctions = [this.selectionSort, this.bubbleSort, this.insertionSort, this.mergeSort];
         const thisSortFunction = sortFunctions[activeSort];
         thisSortFunction(sortArray);
+    }
+
+    resetBars() {
+        const newArray = getRandomArray(55);
+        
+        this.setState({
+            sortBars: newArray,
+        });
     }
 
     render()    {
@@ -309,6 +336,7 @@ class Sorting extends React.Component   {
                     onClick={() => this.startSorting(this.state.active, this.state.sortBars)}
                     printArray={this.state.sortBars}
                     activeBars={this.state.activeBars}
+                    reset={() => this.resetBars()}
                 />
             </div>
         );
