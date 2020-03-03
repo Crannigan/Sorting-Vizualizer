@@ -137,7 +137,7 @@ class Sorting extends React.Component   {
         const currentArray = getRandomArray(55);
 
         this.state = {
-            methods: ['Selection Sort', 'Bubble Sort'],
+            methods: ['Selection Sort', 'Bubble Sort', 'Insertion Sort'],
             active: 0,
             sortBars: currentArray,
             activeBars: null,
@@ -148,6 +148,8 @@ class Sorting extends React.Component   {
         this.bubbleSort = this.bubbleSort.bind(this);
         this.startSorting = this.startSorting.bind(this);
         this.recursiveBubbleSort = this.recursiveBubbleSort.bind(this);
+        this.insertionSort = this.insertionSort.bind(this);
+        this.recursiveInsertionSort = this.recursiveInsertionSort.bind(this);
     }
 
     handleClick(i)  {
@@ -159,7 +161,7 @@ class Sorting extends React.Component   {
     selectionSort(sortItems)   {
         setTimeout(() => {
             this.recursiveSelectionSort(sortItems, 0);
-        }, 200);
+        }, 100);
     }
 
     recursiveSelectionSort(sortItems, iVal)   {
@@ -185,14 +187,14 @@ class Sorting extends React.Component   {
 
         setTimeout(() => {
             this.recursiveSelectionSort(this.state.sortBars, (iVal + 1));
-        }, 200);
+        }, 100);
 
     }
 
     bubbleSort(sortItems)   {
         setTimeout(() => {
             this.recursiveBubbleSort(sortItems, 0, true, sortItems.length);
-        }, 200);
+        }, 100);
     }
 
     recursiveBubbleSort(sortItems, iVal, noSwaps, limit)   {
@@ -233,9 +235,64 @@ class Sorting extends React.Component   {
         })
     }
 
+    insertionSort(sortItems)    {
+        setTimeout(() => {
+            this.recursiveInsertionSort(sortItems, 0, 0);
+        }, 50);
+    }
+
+    recursiveInsertionSort(sortItems, iVal, cmpVal)   {
+        let changeArray = sortItems, iter = iVal;
+
+        if(iter === changeArray.length) {
+            setTimeout(() =>    {
+                this.setState({
+                    activeBars: null,
+                });
+            }, 50);
+            return;
+        }
+
+        this.setState({
+            activeBars: [cmpVal, cmpVal - 1],
+        });
+
+        let val1 = changeArray[cmpVal];
+        let val2 = changeArray[cmpVal + 1];
+
+        if(val1 > val2) {
+            changeArray[cmpVal] = val2;
+            changeArray[cmpVal + 1] = val1;
+
+            this.setState({
+                sortBars: changeArray,
+            });
+
+            if(cmpVal === 0)    {
+                setTimeout(() => {
+                    this.recursiveInsertionSort(changeArray, iter + 1, iter);
+                }, 50);
+            }   else    {
+                setTimeout(() => {
+                    this.recursiveInsertionSort(changeArray, iter, cmpVal - 1);
+                }, 50);
+            }
+        }   else    {
+            this.setState({
+                sortBars: changeArray,
+            });
+            setTimeout(() => {
+                this.recursiveInsertionSort(changeArray, iter + 1, iter);
+            }, 50);
+        }
+
+
+
+    }
+
 
     startSorting(activeSort, sortArray)    {
-        const sortFunctions = [this.selectionSort, this.bubbleSort, this.testSort];
+        const sortFunctions = [this.selectionSort, this.bubbleSort, this.insertionSort];
         const thisSortFunction = sortFunctions[activeSort];
         thisSortFunction(sortArray);
     }
